@@ -8,7 +8,14 @@ The `MMM-WeatherDependentClothes` module is based on the default `currentweather
 - WeatherDependentClothes screenshot
 
 ![WeatherDependentClothes Screenshot 1](screenshot01.png)
+
+In Image 1 the module recommends to take a Jacket, Pants and Shoes with you. This will be sufficient for the next eight hours. After that the weather gets chilly so a winter Jacket and cold protective pants are adviced.
+
 ![WeatherDependentClothes Screenshot 2](screenshot02.png)
+
+Image 2 reminds you to pick up an Umbrella and warns you about some heavy rain later. Take a Raincoat with you or use a Winter Jacket with rainprotection.
+
+The calculaitons for temperature are based on medean values (it could get a bit more chilly/hot) while rainfall is summed up.
 
 ### Installation
 ````
@@ -23,21 +30,28 @@ To use this module, add it to the modules array in the `config/config.js` file:
 modules: [
 	{
 		module: "MMM-WeatherDependentClothes",
-		position: "top_right", // This can be any of the regions.
+		position: "top_right",
 		config: {
 			// See 'Configuration options' for more information.
 			location: "Vienna,Austria",
-			locationID: "", //Location ID from http://bulk.openweathermap.org/sample/city.list.json.gz
-			appid: "abcde12345abcde12345abcde12345ab" //openweathermap.org API key.
+			locationID: "", // Location ID from http://bulk.openweathermap.org/sample/city.list.json.gz
+			appid: "YOUR-API-KEY-HERE", // OpenWeatherMap.org API-Key
 			preferences: [
 				{
-				    name: "Winter jacket",
-				    icon: "jacket-cold",
-				    conditions: {
-					temp_max: 2.0,
-				    }
+					name: "Pants",
+					icon: "pants",
+					conditions: {
+						temp_max: 16.0,
+					},
 				},
-				// more items here. See .js for default list
+				{
+					name: "Shorts",
+					icon: "shorts",
+					conditions: {
+						temp_min: 16.0,
+					},
+				},
+				// add more items here. See .js for default list
 			]
 		}
 	}
@@ -63,9 +77,10 @@ The following properties can be configured:
 | `apiVersion`                 | The OpenWeatherMap API version to use. <br><br> **Default value:**  `2.5`
 | `apiBase`                    | The OpenWeatherMap base URL. <br><br> **Default value:**  `'http://api.openweathermap.org/data/'`
 | `weatherEndpoint`	           | The OpenWeatherMap API endPoint. <br><br> **Default value:**  `'forecast'`
-| `forecastResultLimit`	           | Defines amount of forecast data sets to be fetched. The clothing preferences are matched against these data sets. <br><br> **Default value:**  `4` <br><br> **Note:** Each data set is three hours apart and the first set may be up to 3 hours old. (e.g. `4` fetches 4*3: forecast of next 9 to 12 hours)
+| `forecastResultLimit`	           | Defines amount of forecast data sets to be fetched. The clothing preferences are matched against these data sets. <br><br> **Default value:**  `3` <br><br> **Note:** Each data set is three hours apart and the first set may be up to 3 hours old. (e.g. `3` fetches 3*3h: forecast of next 6 to 9 hours)
 | `forecastResultLimitExtended`	           | Defines amount of extended forecast data sets to be fetched. <br><br> **Default value:**  `2` <br><br> **Note:** If this is not `0` (Zero) and the weather is significantly changing after the `forecastResultLimit` data sets, additional clothing recommondations are displayed (after the `iconSeperator`).
 | `logForecastResults`	           | Log weatherForecastResults to console if `true`. <br><br> **Default value:**  `false`
+| `displayEmptyMessage`	           | If `true`, a message will inform you that no clothing item matches the current weather. If `false`, the area will stay empty. <br><br> **Default value:**  `true`
 | `iconPath`	           | The path to the icons folder. <br><br> **Default value:**  `'icons/'`
 | `iconScale`	           | Scale of PNG icons (1 stands for 100%). <br><br> **Default value:**  `1`
 | `iconSize`	           | Define iconSize for PNG icons. <br><br> **Default value:**  `64`

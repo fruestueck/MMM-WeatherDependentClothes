@@ -23,6 +23,7 @@ Module.register("MMM-WeatherDependentClothes", {
 		forecastResultLimitExtended: 2,
 		
 		logForecastResults: false,
+		displayEmptyMessage: true,
 		
 		units: config.units,
 		updateInterval: 20 * 60 * 1000, // 20 Min
@@ -34,6 +35,7 @@ Module.register("MMM-WeatherDependentClothes", {
 		iconScale: 1, // 1.00 = 100 %
 		iconSize: 64, // px
 		iconSeperator: "extendedForecastSymbol00",
+		
 		// A list of clohtes and conditions to be matched for display
 		preferences: [
 			{
@@ -47,7 +49,7 @@ Module.register("MMM-WeatherDependentClothes", {
 				name: "HeavyRain",
 				icon: "wet",
 				conditions: {
-					rainfall_min: 14,
+					rainfall_min: 14, // mm
 				}
 			},
 			{
@@ -146,7 +148,7 @@ Module.register("MMM-WeatherDependentClothes", {
 				name: "Regenschirm",
 				icon: "umbrella2",
 				conditions: {
-					rainfall_min: 4, // mm
+					rainfall_min: 4,
 				},
 			},
 			{
@@ -212,6 +214,11 @@ Module.register("MMM-WeatherDependentClothes", {
 		
 		if (!this.loaded) {
 			wrapper.innerHTML = this.translate("LOADING");
+			return wrapper;
+		}
+		
+		if (this.config.preferences.length == 0) {
+			wrapper.innerHTML = "The preferences list is empty. Please, add some clothes and conditions.";
 			return wrapper;
 		}
 		
@@ -324,15 +331,14 @@ Module.register("MMM-WeatherDependentClothes", {
 				+ "px; width: auto; display: inline; padding: 0 5px;");
 			wrapper.appendChild(imgSeperator);
 			wrapper.appendChild(forecastExtended);
+		} else if (this.config.displayEmptyMessage && (forecast.children.length == 0)) {
+			wrapper.innerHTML = "<small>No clothing match for current weather.</small>";
 		}
 		
 		// Log forecast data
-		var debugtext = this.temperature + "°C, "
-			+ "rain: "+this.rainfall + "mm, " + 
-			this.weatherType + ", wind:" + this.windSpeed + " m/s, " +
-			"clouds:" +this.cloudDensity + "%";
 		if (this.config.logForecastResults) {
-			Log.log(debugtext);
+			Log.log(this.temperature + "°C, " + "rain: "+this.rainfall + "mm, " + this.weatherType + ", wind:" + 
+					this.windSpeed + " m/s, " + "clouds:" +this.cloudDensity + "%");
 		}
 	
 		return wrapper;
@@ -349,7 +355,6 @@ Module.register("MMM-WeatherDependentClothes", {
 		} else if (this.config.location) {
 			params += "q=" + this.config.location;
 		} else {
-			// this.hide(100, {lockString:this.identifier});
 			return;
 		}
 		
