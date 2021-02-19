@@ -28,7 +28,7 @@ modules: [
 			// See 'Configuration options' for more information.
 			location: "Vienna,Austria",
 			locationID: "", //Location ID from http://bulk.openweathermap.org/sample/city.list.json.gz
-			appid: "abcde12345abcde12345abcde12345ab" //openweathermap.org API key.
+			appid: "abcde12345abcde12345abcde12345ab", //openweathermap.org API key.
 			preferences: [
 				{
 				    name: "Winter jacket",
